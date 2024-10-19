@@ -3,7 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Management.Automation;
-using Mercury.PowerShell.Hooks.Utilities;
+using System.Reflection;
 
 namespace Mercury.PowerShell.Hooks.Cmdlets.Abstractions;
 
@@ -86,7 +86,7 @@ public abstract class PSProxyCmdlet(string targetCommand) : PSCmdlet, IDynamicPa
 
   /// <inheritdoc />
   protected override void ProcessRecord()
-    => Parallel.Invoke(() => SteppablePipeline?.Process(PSCmdletUtilities.GetParameters(this)), OnProcessRecord);
+    => Parallel.Invoke(() => SteppablePipeline?.Process(GetParameters(this)), OnProcessRecord);
 
   /// <inheritdoc />
   protected sealed override void EndProcessing()
@@ -95,4 +95,36 @@ public abstract class PSProxyCmdlet(string targetCommand) : PSCmdlet, IDynamicPa
   /// <inheritdoc />
   protected sealed override void StopProcessing()
     => Dispose();
+
+  /// <summary>
+  ///   Get the parameters of a cmdlet.
+  /// </summary>
+  /// <param name="cmdlet">The cmdlet.</param>
+  /// <typeparam name="TCmdlet">The type of the cmdlet.</typeparam>
+  /// <returns>A <see cref="PSObject" /> with the parameters of the cmdlet.</returns>
+  public static PSObject GetParameters<TCmdlet>(TCmdlet cmdlet) where TCmdlet : PSCmdlet {
+    var psobject = new PSObject();
+    var properties = typeof(TCmdlet)
+      .GetProperties()
+      .Where(property => property.GetCustomAttribute<ParameterAttribute>() is not null)
+      .Select(property => new PSNoteProperty(property.Name, property.GetValue(cmdlet)))
+      .ToArray();
+
+    foreach (var property in properties) {
+      psobject.Properties.Add(property);
+    }
+
+    return psobject;
+  }
+
+  /// <summary>
+  ///   Get a parameter from a cmdlet.
+  /// </summary>
+  /// <param name="cmdlet">The cmdlet.</param>
+  /// <param name="exportFunc">The export function.</param>
+  /// <typeparam name="TCmdlet">The type of the cmdlet.</typeparam>
+  /// <typeparam name="TOut">The type of the parameter.</typeparam>
+  /// <returns>The parameter.</returns>
+  public static TOut GetParameter<TCmdlet, TOut>(TCmdlet cmdlet, Func<TCmdlet, TOut> exportFunc) where TCmdlet : PSCmdlet
+    => exportFunc(cmdlet);
 }

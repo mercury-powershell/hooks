@@ -6,7 +6,6 @@ using Mercury.PowerShell.Hooks.Cmdlets.Abstractions;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Mercury.PowerShell.Hooks.Core.Extensions;
-using Mercury.PowerShell.Hooks.Utilities;
 
 namespace Mercury.PowerShell.Hooks.Cmdlets;
 
@@ -33,7 +32,7 @@ public sealed class OutDefaultCmdlet() : PSProxyCmdlet("Microsoft.PowerShell.Cor
   ///   This is because the <c>Out-Default</c> cmdlet is a special cmdlet that is not intended to be used directly.
   /// </remarks>
   protected override void ProcessRecord()
-    => Parallel.Invoke(() => SteppablePipeline?.Process(PSCmdletUtilities.GetParameter(this, cmdlet => cmdlet.InputObject)), OnProcessRecord);
+    => Parallel.Invoke(() => SteppablePipeline?.Process(GetParameter(this, cmdlet => cmdlet.InputObject)), OnProcessRecord);
 
   /// <inheritdoc />
   protected override void OnEndProcessing() {
