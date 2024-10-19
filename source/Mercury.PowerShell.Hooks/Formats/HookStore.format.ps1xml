@@ -1,0 +1,44 @@
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>HookStore</Name>
+      <ViewSelectedBy>
+        <TypeName>Mercury.PowerShell.Hooks.Core.ComplexTypes.HookStore</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Store Type</Label>
+            <Width>15</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Available Hooks</Label>
+            <Width>50</Width>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>
+                  $Output = $_.Items | Select-Object -First 3 | Join-String -Property Identifier -Separator ", "
+                  $Count = $_.Items.Count
+                  $Output += "..."
+
+                  if ($Count -gt 3) {
+                    $Output += " ($($Count - 3) more)"
+                  }
+
+                  $Output
+                </ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>

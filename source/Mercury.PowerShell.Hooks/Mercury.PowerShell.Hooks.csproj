@@ -31,10 +31,13 @@
     <None Update="Mercury.PowerShell.Hooks.psd1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Formats\HookStore.format.ps1xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Management.Automation" Version="7.4.5" />
+    <PackageReference Include="System.Management.Automation" Version="7.4.5"/>
   </ItemGroup>
 
 </Project>
