@@ -40,4 +40,8 @@
     <PackageReference Include="System.Management.Automation" Version="7.4.5"/>
   </ItemGroup>
 
+  <Target Name="GenerateDocumentationXml" AfterTargets="Build">
+    <Exec Command="pwsh -nop -nol -noni -c '$(SolutionDir)/documentation/New-XmlDocumentation.ps1 -Language en-US -OutputDirectory $(ProjectDir)$(OutputPath)'"/>
+  </Target>
+
 </Project>
