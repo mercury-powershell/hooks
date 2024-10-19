@@ -11,9 +11,21 @@
   CompatiblePSEditions = @("Core")
 
   FunctionsToExport    = @()
-  CmdletsToExport      = @()
+  CmdletsToExport      = @(
+    "Get-Hook",
+    "Register-Hook",
+    "Unregister-Hook",
+    "Out-Default",
+    "Pop-Location",
+    "Push-Location",
+    "Set-Location"
+  )
   VariablesToExport    = @()
   AliasesToExport      = @()
+
+  FormatsToProcess     = @(
+    "Formats/HookStore.format.ps1xml"
+  )
 
   PrivateData          = @{
     PSData = @{
