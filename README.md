@@ -8,11 +8,18 @@ This module provides a way to define hooks in PowerShell. The hook is a script b
 
 Currently, the module supports the following hooks:
 
-- [ ] PrePrompt
-- [ ] ChangeWorkingDirectory
+- [x] PrePrompt
+  - This hook is executed before the prompt is displayed. Made using a proxy cmdlet for `Out-Default` 'cause the `prompt` function is triggered when using `tab-completion`.
+- [x] ChangeWorkingDirectory
+  - This hook is executed when the working directory is changed. Made using a proxy cmdlet for `Set-Location`, `Push-Location`, and `Pop-Location`.
 - [ ] AddToHistory
+  - Still not implemented. Looking for a way to hook into the history commands.
 - [ ] Periodic
-- [ ] PreExecution
+  - Still not implemented. Never used it in z-shell, so I am unsure about the behavior and timing.
+- [ ] ~~PreExecution~~
+  - For now this one seems impossible to implement. Maybe if I implement a custom [PSHost][2], but there is no guarantee that it will work.
+
+**PS**: This module is still in development, so some features may not work as expected. If you find any issues, please report them.
 
 ## Installation
 
