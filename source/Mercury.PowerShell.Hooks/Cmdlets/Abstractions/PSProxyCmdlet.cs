@@ -2,7 +2,6 @@
 // See the LICENSE file in the repository root for full license text.
 
 using System.Diagnostics.CodeAnalysis;
-using System.Management.Automation;
 using System.Reflection;
 
 namespace Mercury.PowerShell.Hooks.Cmdlets.Abstractions;

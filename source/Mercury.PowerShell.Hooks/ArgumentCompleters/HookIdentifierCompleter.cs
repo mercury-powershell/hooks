@@ -2,8 +2,6 @@
 // See the LICENSE file in the repository root for full license text.
 
 using System.Collections;
-using System.Management.Automation;
-using System.Management.Automation.Language;
 using Mercury.PowerShell.Hooks.Cmdlets;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
 using Mercury.PowerShell.Hooks.Core.Enums;

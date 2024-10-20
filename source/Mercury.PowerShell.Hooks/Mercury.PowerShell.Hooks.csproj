@@ -23,6 +23,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Include="System.Management.Automation"/>
+    <Using Include=" System.Management.Automation.Language"/>
+
     <InternalsVisibleTo Include="$(AssemblyName).UnitTests"/>
     <InternalsVisibleTo Include="$(AssemblyName).E2ETests"/>
   </ItemGroup>

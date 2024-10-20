@@ -2,7 +2,6 @@
 // See the LICENSE file in the repository root for full license text.
 
 using System.Diagnostics.CodeAnalysis;
-using System.Management.Automation;
 
 namespace Mercury.PowerShell.Hooks.Core.ComplexTypes;
 
