@@ -31,7 +31,7 @@
     <None Update="Mercury.PowerShell.Hooks.psd1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Formats\HookStore.format.ps1xml">
+    <None Update="Mercury.PowerShell.Hooks.Format.ps1xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

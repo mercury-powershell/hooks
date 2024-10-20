@@ -24,7 +24,7 @@
   AliasesToExport      = @()
 
   FormatsToProcess     = @(
-    "Formats/HookStore.format.ps1xml"
+    "Mercury.PowerShell.Hooks.Format.ps1xml"
   )
 
   PrivateData          = @{
