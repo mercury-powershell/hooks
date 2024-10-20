@@ -3,6 +3,9 @@
 
 namespace Mercury.PowerShell.Hooks.ArgumentCompleters.Attributes;
 
+/// <summary>
+///   Attribute to complete hook identifiers.
+/// </summary>
 public sealed class HookIdentifierCompleterAttribute : ArgumentCompleterAttribute, IArgumentCompleterFactory {
   /// <inheritdoc />
   public IArgumentCompleter Create()
