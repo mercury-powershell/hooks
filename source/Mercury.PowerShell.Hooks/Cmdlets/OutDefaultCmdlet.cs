@@ -2,6 +2,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using Mercury.PowerShell.Hooks.Cmdlets.Abstractions;
+using Mercury.PowerShell.Hooks.Core;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Mercury.PowerShell.Hooks.Core.Extensions;
@@ -35,15 +36,19 @@ public sealed class OutDefaultCmdlet() : PSProxyCmdlet("Microsoft.PowerShell.Cor
 
   /// <inheritdoc />
   protected override void OnEndProcessing() {
-    var variableKey = HookType.PrePrompt.GetVariableKey();
-    var hookVariable = SessionState.PSVariable.Get(variableKey);
+    var hookTypeKey = HookType.PrePrompt.GetVariableKey();
 
-    if (hookVariable?.Value is not HookStore hookStore) {
+    if (!StateManager.TryGetValue(hookTypeKey, out HookStore hookStore)) {
       return;
     }
 
-    Parallel.ForEach(hookStore.Items, new ParallelOptions {
-      MaxDegreeOfParallelism = 4
-    }, item => item.Action.Invoke());
+    try {
+      Parallel.ForEach(hookStore.Items, new ParallelOptions {
+        MaxDegreeOfParallelism = 4
+      }, item => item.Action.Invoke());
+    }
+    catch (Exception ex) {
+      WriteError(new ErrorRecord(ex, "InvokeHooksFailed", ErrorCategory.InvalidOperation, null));
+    }
   }
 }

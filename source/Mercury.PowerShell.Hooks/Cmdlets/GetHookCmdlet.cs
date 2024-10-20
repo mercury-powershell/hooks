@@ -2,6 +2,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using Mercury.PowerShell.Hooks.ArgumentCompleters.Attributes;
+using Mercury.PowerShell.Hooks.Core;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Mercury.PowerShell.Hooks.Core.Extensions;
@@ -29,10 +30,9 @@ public sealed class GetHookCmdlet : PSCmdlet {
 
   /// <inheritdoc />
   protected override void ProcessRecord() {
-    var variableKey = Type.GetVariableKey();
-    var hookVariable = SessionState.PSVariable.Get(variableKey);
+    var hookTypeKey = Type.GetVariableKey();
 
-    if (hookVariable?.Value is not HookStore hookStore) {
+    if (!StateManager.TryGetValue(hookTypeKey, out HookStore hookStore)) {
       return;
     }
 

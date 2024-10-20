@@ -2,6 +2,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using Mercury.PowerShell.Hooks.Cmdlets.Abstractions;
+using Mercury.PowerShell.Hooks.Core;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Mercury.PowerShell.Hooks.Core.Extensions;
@@ -55,18 +56,13 @@ public sealed class PushLocationCmdlet() : PSProxyCmdlet("Microsoft.PowerShell.M
 
   /// <inheritdoc />
   protected override void OnEndProcessing() {
-    var variableKey = HookType.ChangeWorkingDirectory.GetVariableKey();
-    var hooksVariable = SessionState.PSVariable.Get(variableKey);
+    var hookTypeKey = HookType.ChangeWorkingDirectory.GetVariableKey();
 
-    if (hooksVariable is null) {
+    if (!StateManager.TryGetValue(hookTypeKey, out HookStore hookStore)) {
       return;
     }
 
     try {
-      if (hooksVariable.Value is not HookStore hookStore) {
-        return;
-      }
-
       Parallel.ForEach(hookStore.Items, new ParallelOptions {
         MaxDegreeOfParallelism = 4
       }, item => item.Action.Invoke());

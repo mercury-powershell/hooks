@@ -2,7 +2,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using System.Collections;
-using Mercury.PowerShell.Hooks.Cmdlets;
+using Mercury.PowerShell.Hooks.Core;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Mercury.PowerShell.Hooks.Core.Extensions;
@@ -27,10 +27,9 @@ internal sealed class HookIdentifierCompleter : IArgumentCompleter {
       return [];
     }
 
-    var currentTypeName = enumCurrentType.GetVariableKey();
-    var variable = RegisterHookCmdlet._hookVariables[currentTypeName];
+    var hookTypeKey = enumCurrentType.GetVariableKey();
 
-    return variable.Value is not HookStore hookStore
+    return !StateManager.TryGetValue(hookTypeKey, out HookStore hookStore)
       ? []
       : hookStore.Items.Select(item => new CompletionResult(item.Identifier));
   }

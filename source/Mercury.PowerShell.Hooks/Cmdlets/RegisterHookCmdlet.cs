@@ -1,6 +1,7 @@
 // Copyright (c) Bruno Sales <me@baliestri.dev>. Licensed under the MIT License.
 // See the LICENSE file in the repository root for full license text.
 
+using Mercury.PowerShell.Hooks.Core;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Mercury.PowerShell.Hooks.Core.Extensions;
@@ -13,8 +14,6 @@ namespace Mercury.PowerShell.Hooks.Cmdlets;
 [OutputType(typeof(HookStoreItem))]
 [Cmdlet(VerbsLifecycle.Register, "Hook")]
 public sealed class RegisterHookCmdlet : PSCmdlet {
-  internal static readonly Dictionary<string, PSVariable> _hookVariables = new();
-
   /// <summary>
   ///   The type of the hook.
   /// </summary>
@@ -48,35 +47,17 @@ public sealed class RegisterHookCmdlet : PSCmdlet {
 
     foreach (var availableHook in availableHooks) {
       var availableHookKey = availableHook.GetVariableKey();
-      var hooksVariable = SessionState.PSVariable.Get(availableHookKey) ??
-                          new PSVariable(availableHookKey, HookStore.NewStore(availableHook), ScopedItemOptions.Private);
 
-      if (_hookVariables.TryGetValue(availableHookKey, out var existingVariable)) {
-        if (existingVariable.Value is not HookStore existingVariableStore ||
-            hooksVariable.Value is not HookStore hooksVariableStore) {
-          throw new InvalidOperationException("The hook store is not valid.");
-        }
-
-        if (existingVariableStore != hooksVariableStore) {
-          _hookVariables.Remove(availableHookKey);
-        }
+      if (!StateManager.TryGetValue<HookStore>(availableHookKey, out var _)) {
+        StateManager.AddOrUpdate(availableHookKey, HookStore.NewStore(Type));
       }
-
-      _hookVariables.TryAdd(availableHookKey, hooksVariable);
     }
   }
 
   /// <inheritdoc />
   protected override void ProcessRecord() {
-    var entryName = Type.GetVariableKey();
-
-    if (!_hookVariables.TryGetValue(entryName, out var entry)) {
-      throw new InvalidOperationException("The hook store is not valid.");
-    }
-
-    if (entry.Value is not HookStore hookStore) {
-      throw new InvalidOperationException("The hook store is not valid.");
-    }
+    var hookTypeKey = Type.GetVariableKey();
+    var hookStore = StateManager.Get<HookStore>(hookTypeKey);
 
     var hookItem = HookStoreItem.NewItem(Identifier, Action);
 
@@ -87,12 +68,7 @@ public sealed class RegisterHookCmdlet : PSCmdlet {
     if (PassThru.IsPresent) {
       WriteObject(hookItem);
     }
-  }
 
-  /// <inheritdoc />
-  protected override void EndProcessing() {
-    foreach (var variable in _hookVariables.Values) {
-      SessionState.PSVariable.Set(variable);
-    }
+    StateManager.AddOrUpdate(hookTypeKey, hookStore);
   }
 }
