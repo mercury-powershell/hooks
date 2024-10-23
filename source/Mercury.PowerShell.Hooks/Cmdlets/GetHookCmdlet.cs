@@ -6,6 +6,7 @@ using Mercury.PowerShell.Hooks.Core;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Mercury.PowerShell.Hooks.Core.Extensions;
+using Mercury.PowerShell.Hooks.Exceptions;
 
 namespace Mercury.PowerShell.Hooks.Cmdlets;
 
@@ -29,6 +30,10 @@ public sealed class GetHookCmdlet : PSCmdlet {
   public string? Identifier { get; init; }
 
   /// <inheritdoc />
+  protected override void BeginProcessing()
+    => StateManager.InitialState();
+
+  /// <inheritdoc />
   protected override void ProcessRecord() {
     var hookTypeKey = Type.GetVariableKey();
 
@@ -38,6 +43,8 @@ public sealed class GetHookCmdlet : PSCmdlet {
 
     if (!string.IsNullOrWhiteSpace(Identifier)) {
       if (!hookStore.Items.Select(item => item.Identifier).Contains(Identifier, StringComparer.OrdinalIgnoreCase)) {
+        WriteError(IdentifierNotFoundException.AsRecord(Type, Identifier));
+
         return;
       }
 

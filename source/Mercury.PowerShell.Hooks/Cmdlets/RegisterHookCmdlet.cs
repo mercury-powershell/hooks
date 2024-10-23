@@ -39,20 +39,8 @@ public sealed class RegisterHookCmdlet : PSCmdlet {
   public SwitchParameter PassThru { get; init; }
 
   /// <inheritdoc />
-  protected override void BeginProcessing() {
-    var availableHooks = new[] {
-      HookType.ChangeWorkingDirectory,
-      HookType.PrePrompt
-    };
-
-    foreach (var availableHook in availableHooks) {
-      var availableHookKey = availableHook.GetVariableKey();
-
-      if (!StateManager.TryGetValue<HookStore>(availableHookKey, out var _)) {
-        StateManager.AddOrUpdate(availableHookKey, HookStore.NewStore(Type));
-      }
-    }
-  }
+  protected override void BeginProcessing()
+    => StateManager.InitialState();
 
   /// <inheritdoc />
   protected override void ProcessRecord() {
