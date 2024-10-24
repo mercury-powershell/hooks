@@ -8,7 +8,7 @@ namespace Mercury.PowerShell.Hooks.Core.ComplexTypes;
 /// <summary>
 ///   Represents a hook store item.
 /// </summary>
-public readonly struct HookStoreItem : IEquatable<HookStoreItem>, IEqualityComparer<HookStoreItem> {
+public readonly struct HookStoreItem : IEquatable<HookStoreItem> {
   /// <summary>
   ///   The unique identifier of the hook.
   /// </summary>
@@ -36,23 +36,16 @@ public readonly struct HookStoreItem : IEquatable<HookStoreItem>, IEqualityCompa
 
   /// <inheritdoc />
   public bool Equals(HookStoreItem other)
-    => Identifier == other.Identifier && Action.Equals(other.Action);
+    => Identifier.Equals(other.Identifier, StringComparison.OrdinalIgnoreCase);
 
   /// <inheritdoc />
   public override bool Equals(object? obj)
-    => obj is HookStoreItem other && Equals(other);
+    => obj is HookStoreItem other &&
+       Equals(other);
 
   /// <inheritdoc />
   public override int GetHashCode()
-    => HashCode.Combine(Identifier, Action);
-
-  /// <inheritdoc />
-  public bool Equals(HookStoreItem x, HookStoreItem y)
-    => x.Identifier == y.Identifier && x.Action.Equals(y.Action);
-
-  /// <inheritdoc />
-  public int GetHashCode(HookStoreItem obj)
-    => HashCode.Combine(obj.Identifier, obj.Action);
+    => Identifier.GetHashCode();
 
   public static bool operator ==(HookStoreItem left, HookStoreItem right)
     => left.Equals(right);

@@ -9,7 +9,7 @@ namespace Mercury.PowerShell.Hooks.Core.ComplexTypes;
 /// <summary>
 ///   Represents a hook store.
 /// </summary>
-public readonly struct HookStore : IEquatable<HookStore>, IEqualityComparer<HookStore> {
+public readonly struct HookStore : IEquatable<HookStore> {
   /// <summary>
   ///   The type of the hook store.
   /// </summary>
@@ -53,15 +53,7 @@ public readonly struct HookStore : IEquatable<HookStore>, IEqualityComparer<Hook
 
   /// <inheritdoc />
   public override int GetHashCode()
-    => HashCode.Combine((int)Type, Items);
-
-  /// <inheritdoc />
-  public bool Equals(HookStore x, HookStore y)
-    => x.Type == y.Type && x.Items.Equals(y.Items);
-
-  /// <inheritdoc />
-  public int GetHashCode(HookStore obj)
-    => HashCode.Combine((int)obj.Type, obj.Items);
+    => HashCode.Combine(Type, Items);
 
   public static bool operator ==(HookStore left, HookStore right)
     => left.Equals(right);
