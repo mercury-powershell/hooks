@@ -5,6 +5,7 @@ using Mercury.PowerShell.Hooks.Core;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Mercury.PowerShell.Hooks.Core.Extensions;
+using Mercury.PowerShell.Hooks.Exceptions;
 
 namespace Mercury.PowerShell.Hooks.Cmdlets;
 
@@ -50,7 +51,8 @@ public sealed class RegisterHookCmdlet : PSCmdlet {
     var hookItem = HookStoreItem.NewItem(Identifier, Action);
 
     if (!hookStore.Items.Add(hookItem)) {
-      WriteObject($"The hook with identifier '{Identifier}' already exists in the '{Type}' hook store.");
+      WriteError(IdentifierAlreadyExistsException.AsRecord(Type, Identifier));
+      return;
     }
 
     if (PassThru.IsPresent) {
