@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Using Include="NUnit.Framework"/>
+    <Using Include="Mercury.PowerShell.Hooks.Testing.Tools"/>
   </ItemGroup>
 
   <ItemGroup>
