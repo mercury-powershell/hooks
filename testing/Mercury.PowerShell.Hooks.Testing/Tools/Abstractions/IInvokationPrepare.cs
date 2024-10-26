@@ -6,15 +6,15 @@ using System.Management.Automation.Runspaces;
 namespace Mercury.PowerShell.Hooks.Testing.Tools.Abstractions;
 
 /// <summary>
-///   Interface to configure the invokation of a cmdlet.
+///   Interface to prepare the invokation of a cmdlet.
 /// </summary>
-public interface IInvokationConfigure {
+public interface IInvokationPrepare {
   /// <summary>
   ///   Add a variable entry to the configuration.
   /// </summary>
   /// <param name="variableEntry">The variable entry to be added.</param>
   /// <returns>The current instance of the configuration.</returns>
-  IInvokationConfigure WithVariableEntry(SessionStateVariableEntry variableEntry);
+  IInvokationPrepare WithVariableEntry(SessionStateVariableEntry variableEntry);
 
   /// <summary>
   ///   Add a variable entry to the configuration.
@@ -22,7 +22,14 @@ public interface IInvokationConfigure {
   /// <param name="name">The name of the variable.</param>
   /// <param name="value">The value of the variable.</param>
   /// <returns>The current instance of the configuration.</returns>
-  IInvokationConfigure WithVariableEntry(string name, object value);
+  IInvokationPrepare WithVariableEntry(string name, object value);
+
+  /// <summary>
+  ///   Add a parameter to the configuration.
+  /// </summary>
+  /// <param name="commandParameter">The parameter to be added.</param>
+  /// <returns>The current instance of the configuration.</returns>
+  IInvokationPrepare WithParameter(CommandParameter commandParameter);
 
   /// <summary>
   ///   Add a parameter to the configuration.
@@ -30,5 +37,5 @@ public interface IInvokationConfigure {
   /// <param name="key">The key of the parameter.</param>
   /// <param name="value">The value of the parameter.</param>
   /// <returns>The current instance of the configuration.</returns>
-  IInvokationConfigure WithParameter(string key, object value);
+  IInvokationPrepare WithParameter(string key, object value);
 }
