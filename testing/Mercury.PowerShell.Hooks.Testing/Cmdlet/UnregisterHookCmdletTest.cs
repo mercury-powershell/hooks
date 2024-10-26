@@ -14,7 +14,7 @@ public sealed class UnregisterHookCmdletTest {
   public void OutputType_When_IdentifierIsUnknown_ShouldBe_ErrorRecord() {
     // Act
     var identifier = Guid.NewGuid().ToString();
-    var errorRecord = InvokationHelper.ErrorRecord<UnregisterHookCmdlet>(configure => configure
+    var errorRecord = PSCmdletHelper.TryInvoke<UnregisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.PrePrompt)
       .WithParameter("Identifier", identifier)
       .WithParameter("PassThru", true));
@@ -32,13 +32,13 @@ public sealed class UnregisterHookCmdletTest {
   public void OutputType_When_IdentifierIsKnown_ShouldBe_HookStoreItem() {
     // Arrange
     var identifier = Guid.NewGuid().ToString();
-    _ = InvokationHelper.Invoke<RegisterHookCmdlet>(configure => configure
+    _ = PSCmdletHelper.Invoke<RegisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", identifier)
       .WithParameter("Action", ScriptBlock.Create("""{ Write-Host "Current Directory: $PWD" }""")));
 
     // Act
-    var output = InvokationHelper.Invoke<UnregisterHookCmdlet>(configure => configure
+    var output = PSCmdletHelper.Invoke<UnregisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", identifier)
       .WithParameter("PassThru", true));
@@ -52,13 +52,13 @@ public sealed class UnregisterHookCmdletTest {
   public void OutputType_When_PassThruIsNotPresent_ShouldBe_Null() {
     // Arrange
     var identifier = Guid.NewGuid().ToString();
-    _ = InvokationHelper.Invoke<RegisterHookCmdlet>(configure => configure
+    _ = PSCmdletHelper.Invoke<RegisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", identifier)
       .WithParameter("Action", ScriptBlock.Create("""{ Write-Host "Current Directory: $PWD" }""")));
 
     // Act
-    var output = InvokationHelper.Invoke<UnregisterHookCmdlet>(configure => configure
+    var output = PSCmdletHelper.Invoke<UnregisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", identifier));
 

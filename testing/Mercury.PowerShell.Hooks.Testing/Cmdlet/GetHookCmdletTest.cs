@@ -13,13 +13,13 @@ public sealed class GetHookCmdletTest {
   [Test]
   public void OutputType_When_IdentifierIsNotProvided_ShouldBe_HookStore() {
     // Arrange
-    _ = InvokationHelper.Invoke<RegisterHookCmdlet>(configure => configure
+    _ = PSCmdletHelper.Invoke<RegisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", Guid.NewGuid().ToString())
       .WithParameter("Action", ScriptBlock.Create("""{ Write-Host "Current Directory: $PWD" }""")));
 
     // Act
-    var output = InvokationHelper.Invoke<GetHookCmdlet>(configure => configure
+    var output = PSCmdletHelper.Invoke<GetHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory));
 
     // Assert
@@ -31,13 +31,13 @@ public sealed class GetHookCmdletTest {
   public void OutputType_When_IdentifierIsKnown_ShouldBe_HookStoreItem() {
     // Arrange
     var identifier = Guid.NewGuid().ToString();
-    _ = InvokationHelper.Invoke<RegisterHookCmdlet>(configure => configure
+    _ = PSCmdletHelper.Invoke<RegisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", identifier)
       .WithParameter("Action", ScriptBlock.Create("""{ Write-Host "Current Directory: $PWD" }""")));
 
     // Act
-    var output = InvokationHelper.Invoke<GetHookCmdlet>(configure => configure
+    var output = PSCmdletHelper.Invoke<GetHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", identifier));
 
@@ -50,7 +50,7 @@ public sealed class GetHookCmdletTest {
   public void OutputType_When_IdentifierIsUnknown_ShouldBe_ErrorRecord() {
     // Act
     var identifier = Guid.NewGuid().ToString();
-    var errorRecord = InvokationHelper.ErrorRecord<GetHookCmdlet>(configure => configure
+    var errorRecord = PSCmdletHelper.TryInvoke<GetHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", identifier));
 

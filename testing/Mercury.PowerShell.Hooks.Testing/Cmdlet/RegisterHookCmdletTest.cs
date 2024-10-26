@@ -13,7 +13,7 @@ public sealed class RegisterHookCmdletTest {
   [Test]
   public void OutputType_When_PassThruIsNotPresent_ShouldBe_Null() {
     // Act
-    var output = InvokationHelper.Invoke<RegisterHookCmdlet>(configure => configure
+    var output = PSCmdletHelper.Invoke<RegisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", Guid.NewGuid().ToString())
       .WithParameter("Action", ScriptBlock.Create("""{ Write-Host "Current Directory: $PWD" }""")));
@@ -25,7 +25,7 @@ public sealed class RegisterHookCmdletTest {
   [Test]
   public void OutputType_When_PassThruIsPresent_ShouldBe_HookStoreItem() {
     // Act
-    var output = InvokationHelper.Invoke<RegisterHookCmdlet>(configure => configure
+    var output = PSCmdletHelper.Invoke<RegisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", Guid.NewGuid().ToString())
       .WithParameter("Action", ScriptBlock.Create("""{ Write-Host "Current Directory: $PWD" }"""))
@@ -40,13 +40,13 @@ public sealed class RegisterHookCmdletTest {
   public void OutputType_When_IdentifierAlreadyExists_ShouldBe_ErrorRecord() {
     // Arrange
     var identifier = Guid.NewGuid().ToString();
-    _ = InvokationHelper.Invoke<RegisterHookCmdlet>(configure => configure
+    _ = PSCmdletHelper.Invoke<RegisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", identifier)
       .WithParameter("Action", ScriptBlock.Create("""{ Write-Host "Current Directory: $PWD" }""")));
 
     // Act
-    var errorRecord = InvokationHelper.ErrorRecord<RegisterHookCmdlet>(configure => configure
+    var errorRecord = PSCmdletHelper.TryInvoke<RegisterHookCmdlet>(prepare => prepare
       .WithParameter("Type", HookType.ChangeWorkingDirectory)
       .WithParameter("Identifier", identifier)
       .WithParameter("Action", ScriptBlock.Create("""{ Write-Host "Current Directory: $PWD" }""")));
