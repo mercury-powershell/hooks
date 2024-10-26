@@ -26,7 +26,13 @@ Currently, the module supports the following hooks:
 To install the module, you can use the following command:
 
 ```powershell
-Install-Module -Name Mercury.PowerShell.Hooks
+Install-Module -Name Mercury.PowerShell.Hooks -AllowClobber
+```
+
+Then, you can import the module using the following command:
+
+```powershell
+Import-Module -Name Mercury.PowerShell.Hooks
 ```
 
 ## Usage
