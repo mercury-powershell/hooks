@@ -47,9 +47,21 @@ public readonly struct HookStoreItem : IEquatable<HookStoreItem> {
   public override int GetHashCode()
     => Identifier.GetHashCode();
 
+  /// <summary>
+  ///   Check if two hook store items are equal.
+  /// </summary>
+  /// <param name="left">The left hook store item.</param>
+  /// <param name="right">The right hook store item.</param>
+  /// <returns>True if the hook store items are equal, false otherwise.</returns>
   public static bool operator ==(HookStoreItem left, HookStoreItem right)
     => left.Equals(right);
 
+  /// <summary>
+  ///   Check if two hook store items are different.
+  /// </summary>
+  /// <param name="left">The left hook store item.</param>
+  /// <param name="right">The right hook store item.</param>
+  /// <returns>True if the hook store items are different, false otherwise.</returns>
   public static bool operator !=(HookStoreItem left, HookStoreItem right)
     => !left.Equals(right);
 }

@@ -12,6 +12,9 @@ namespace Mercury.PowerShell.Hooks.Cmdlets.Abstractions;
 /// <param name="targetCommand">The target command to be proxied.</param>
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public abstract class PSProxyCmdlet(string targetCommand) : PSCmdlet, IDynamicParameters, IDisposable {
+  /// <summary>
+  ///   The steppable pipeline of the cmdlet.
+  /// </summary>
   protected SteppablePipeline? SteppablePipeline { get; set; }
 
   /// <inheritdoc />
