@@ -5,6 +5,7 @@
   ModuleVersion        = "0.1.0.0"
 
   Author               = "Bruno Sales"
+  Description          = "Hooks functionality for PowerShell 7."
   Copyright            = "(c) Bruno Sales. All rights reserved."
 
   PowerShellVersion    = "7.0"
