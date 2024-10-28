@@ -27,12 +27,8 @@ public sealed class OutDefaultCmdlet() : PSProxyCmdlet("Microsoft.PowerShell.Cor
   public PSObject InputObject { get; init; } = default!;
 
   /// <inheritdoc />
-  /// <remarks>
-  ///   The <c>Out-Default</c> cmdlet proxy only works normally when the <c>InputObject</c> parameter is forwarded to the <c>Out-Default</c> cmdlet.
-  ///   This is because the <c>Out-Default</c> cmdlet is a special cmdlet that is not intended to be used directly.
-  /// </remarks>
-  protected override void ProcessRecord()
-    => Parallel.Invoke(() => SteppablePipeline?.Process(GetParameter(this, cmdlet => cmdlet.InputObject)), OnProcessRecord);
+  protected override object PipelineDefinedParameters()
+    => GetParameter(this, cmdlet => cmdlet.InputObject);
 
   /// <inheritdoc />
   protected override void OnEndProcessing() {

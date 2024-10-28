@@ -55,6 +55,13 @@ public abstract class PSProxyCmdlet(string targetCommand) : PSCmdlet, IDynamicPa
     => runtimeDefinedParameterDictionary;
 
   /// <summary>
+  ///   The parameters to pass when processing the <see cref="SteppablePipeline" />.
+  /// </summary>
+  /// <returns>A object with the parameters.</returns>
+  protected virtual object PipelineDefinedParameters()
+    => GetParameters(this);
+
+  /// <summary>
   ///   Action to be executed together with <see cref="BeginProcessing" /> method.
   /// </summary>
   protected virtual void OnBeginProcessing() { }
@@ -87,8 +94,8 @@ public abstract class PSProxyCmdlet(string targetCommand) : PSCmdlet, IDynamicPa
   }
 
   /// <inheritdoc />
-  protected override void ProcessRecord()
-    => Parallel.Invoke(() => SteppablePipeline?.Process(GetParameters(this)), OnProcessRecord);
+  protected sealed override void ProcessRecord()
+    => Parallel.Invoke(() => SteppablePipeline?.Process(PipelineDefinedParameters()), OnProcessRecord);
 
   /// <inheritdoc />
   protected sealed override void EndProcessing()
