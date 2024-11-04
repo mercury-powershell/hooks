@@ -1,0 +1,54 @@
+name: Publish PowerShell Module
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_FILE_PATH: source/Mercury.PowerShell.Hooks/Mercury.PowerShell.Hooks.csproj
+      MODULE_NAME: Mercury.PowerShell.Hooks
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Install PowerShell
+        run: |
+          dotnet tool install --global PowerShell
+          export PATH="$PATH:/root/.dotnet/tools"
+
+      - name: Test module
+        shell: pwsh
+        run: dotnet test
+
+      - name: Publish module
+        shell: pwsh
+        run: dotnet publish $PROJECT_FILE_PATH -c Release -o ./$MODULE_NAME
+
+      - name: Publish to PowerShell Gallery
+        shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: |
+          $apiKey = $env:PSGALLERY_API_KEY
+
+          if (-not (Get-PSRepository -Name 'PSGallery' -ErrorAction SilentlyContinue)) {
+            Register-PSRepository -Default
+          }
+
+          Publish-Module -Path $env:MODULE_NAME `
+                         -Repository PSGallery `
+                         -NuGetApiKey $apiKey `
+                         -Force
+
+          Write-Host "Published $moduleName to PowerShell Gallery successfully."
