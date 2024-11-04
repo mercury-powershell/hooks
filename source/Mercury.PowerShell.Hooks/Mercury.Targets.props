@@ -1,33 +1,21 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="GetVersionFromGit" BeforeTargets="BeforeBuild">
-    <Exec Command='git describe --abbrev=60 --long --always'
+    <Exec Command="git describe --abbrev=60 --long --always"
           WorkingDirectory="$(SolutionDir)"
-          StandardOutputImportance="Low">
+          StandardOutputImportance="High"
+          ConsoleToMsBuild="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="MercuryVersion"/>
     </Exec>
-
-    <PropertyGroup Condition="'$(ReleaseTag)' != '' And '$(MercuryVersion)' != ''">
-      <RegexReleaseTag>^((\d+).(\d+).(\d+))(-(\w+)(.(\d+))?)?$</RegexReleaseTag>
-      <ReleaseTagVersionPart>$([System.Text.RegularExpressions.Regex]::Match($(ReleaseTag), $(RegexReleaseTag)).Groups[1].Value)</ReleaseTagVersionPart>
-      <ReleaseTagSemVersionPart>$([System.Text.RegularExpressions.Regex]::Match($(ReleaseTag), $(RegexReleaseTag)).Groups[8].Value)</ReleaseTagSemVersionPart>
-      <ReleaseTagSemVersionPrereleaseNamePart>$([System.Text.RegularExpressions.Regex]::Match($(ReleaseTag), $(RegexReleaseTag)).Groups[6].Value)</ReleaseTagSemVersionPrereleaseNamePart>
-      <RCIncrementValue>100</RCIncrementValue>
-      <GAIncrementValue>500</GAIncrementValue>
-      <ReleaseTagSemVersionPart Condition="'$(ReleaseTagSemVersionPrereleaseNamePart)' == 'rc'">$([MSBuild]::Add($(ReleaseTagSemVersionPart), $(RCIncrementValue)))</ReleaseTagSemVersionPart>
-      <BuildVersion>$(ReleaseTag)</BuildVersion>
-      <FileVersion Condition="'$(ReleaseTagSemVersionPart)' != ''">$(ReleaseTagVersionPart).$(ReleaseTagSemVersionPart)</FileVersion>
-      <FileVersion Condition="'$(FileVersion)' == ''">$(ReleaseTagVersionPart).$(GAIncrementValue)</FileVersion>
-    </PropertyGroup>
+    <Message Text="MercuryVersion: $(MercuryVersion)" Importance="High"/>
 
     <PropertyGroup Condition="'$(MercuryVersion)' != ''">
       <RegexGitVersion>^v(.+)-(\d+)-g(.+)</RegexGitVersion>
-      <FileVersion Condition="'$(FileVersion)' == ''">$([System.Text.RegularExpressions.Regex]::Match($(MercuryVersion), $(RegexGitVersion)).Groups[1].Value)</FileVersion>
-      <BuildVersion Condition="'$(BuildVersion)' == ''">$([System.Text.RegularExpressions.Regex]::Match($(MercuryVersion), $(RegexGitVersion)).Groups[1].Value)</BuildVersion>
-      <AdditionalCommits>$([System.Text.RegularExpressions.Regex]::Match($(PowerShellVersion), $(RegexGitVersion)).Groups[2].Value)</AdditionalCommits>
-      <CommitSHA>$([System.Text.RegularExpressions.Regex]::Match($(PowerShellVersion), $(RegexGitVersion)).Groups[3].Value)</CommitSHA>
+      <FileVersion>$([System.Text.RegularExpressions.Regex]::Match($(MercuryVersion), $(RegexGitVersion)).Groups[1].Value)</FileVersion>
+      <BuildVersion>$([System.Text.RegularExpressions.Regex]::Match($(MercuryVersion), $(RegexGitVersion)).Groups[1].Value)</BuildVersion>
+      <AdditionalCommits>$([System.Text.RegularExpressions.Regex]::Match($(MercuryVersion), $(RegexGitVersion)).Groups[2].Value)</AdditionalCommits>
+      <CommitSHA>$([System.Text.RegularExpressions.Regex]::Match($(MercuryVersion), $(RegexGitVersion)).Groups[3].Value)</CommitSHA>
 
-
-      <FormattedVersion Condition="'$(ReleaseTag)' != '' or '$(AdditionalCommits)' == '0'">$(BuildVersion) SHA: $(CommitSHA)</FormattedVersion>
+      <FormattedVersion Condition="'$(AdditionalCommits)' == '0'">$(BuildVersion) SHA: $(CommitSHA)</FormattedVersion>
       <FormattedVersion Condition="'$(FormattedVersion)' == ''">$(BuildVersion) Commits: $(AdditionalCommits) SHA: $(CommitSHA)</FormattedVersion>
 
       <Version>$(FileVersion)</Version>
