@@ -38,13 +38,6 @@ public sealed class OutDefaultCmdlet() : PSProxyCmdlet("Microsoft.PowerShell.Cor
       return;
     }
 
-    try {
-      Parallel.ForEach(hookStore.Items, new ParallelOptions {
-        MaxDegreeOfParallelism = 4
-      }, item => item.Action.Invoke());
-    }
-    catch (Exception ex) {
-      WriteError(new ErrorRecord(ex, "InvokeHooksFailed", ErrorCategory.InvalidOperation, null));
-    }
+    HookStore.InvokeAll(hookStore.Items);
   }
 }

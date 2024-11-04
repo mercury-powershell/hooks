@@ -70,13 +70,6 @@ public sealed class SetLocationCmdlet() : PSProxyCmdlet("Microsoft.PowerShell.Ma
       return;
     }
 
-    try {
-      Parallel.ForEach(hookStore.Items, new ParallelOptions {
-        MaxDegreeOfParallelism = 4
-      }, item => item.Action.Invoke());
-    }
-    catch (Exception ex) {
-      WriteError(new ErrorRecord(ex, "InvokeHooksFailed", ErrorCategory.InvalidOperation, null));
-    }
+    HookStore.InvokeAll(hookStore.Items);
   }
 }

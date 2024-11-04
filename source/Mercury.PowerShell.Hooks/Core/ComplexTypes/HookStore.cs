@@ -2,7 +2,9 @@
 // See the LICENSE file in the repository root for full license text.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Management.Automation.Runspaces;
 using Mercury.PowerShell.Hooks.Core.Enums;
+using Pwsh = System.Management.Automation.PowerShell;
 
 namespace Mercury.PowerShell.Hooks.Core.ComplexTypes;
 
@@ -72,4 +74,34 @@ public readonly struct HookStore : IEquatable<HookStore> {
   /// <returns>True if the hook stores are different, false otherwise.</returns>
   public static bool operator !=(HookStore left, HookStore right)
     => !left.Equals(right);
+
+  /// <summary>
+  ///   Parallel invoke all the actions in the hook store.
+  /// </summary>
+  /// <param name="items">The hook store items.</param>
+  /// <returns>A task representing the operation.</returns>
+  public static Task InvokeAll(HashSet<HookStoreItem> items) => Task.Run(() => {
+    const int MAX_DEGREE_OF_PARALLELISM = 4;
+
+    using var runspacePool = RunspaceFactory.CreateRunspacePool(1, MAX_DEGREE_OF_PARALLELISM);
+    runspacePool.ThreadOptions = PSThreadOptions.UseNewThread;
+    runspacePool.ApartmentState = ApartmentState.MTA;
+    runspacePool.Open();
+
+    var tasks = items.Select(item => Task.Run(() => {
+        using var ps = Pwsh.Create();
+        ps.RunspacePool = runspacePool;
+
+        try {
+          item.Action.Invoke();
+        }
+        catch {
+          // Log the exception
+          // Do nothing for now
+        }
+      }))
+      .ToArray();
+
+    Task.WaitAll(tasks);
+  });
 }
