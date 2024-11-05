@@ -30,10 +30,6 @@ public sealed class GetHookCmdlet : PSCmdlet {
   public string? Identifier { get; init; }
 
   /// <inheritdoc />
-  protected override void BeginProcessing()
-    => StateManager.InitialState();
-
-  /// <inheritdoc />
   protected override void ProcessRecord() {
     var hookTypeKey = Type.GetVariableKey();
 

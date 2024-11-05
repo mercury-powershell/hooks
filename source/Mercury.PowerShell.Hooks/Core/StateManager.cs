@@ -3,9 +3,6 @@
 
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
-using Mercury.PowerShell.Hooks.Core.ComplexTypes;
-using Mercury.PowerShell.Hooks.Core.Enums;
-using Mercury.PowerShell.Hooks.Core.Extensions;
 
 namespace Mercury.PowerShell.Hooks.Core;
 
@@ -17,24 +14,6 @@ internal static class StateManager {
 
   static StateManager()
     => _threadState = [];
-
-  /// <summary>
-  ///   Initializes the state manager with empty stores for the available hooks.
-  /// </summary>
-  public static void InitialState() {
-    var availableHooks = new[] {
-      HookType.ChangeWorkingDirectory,
-      HookType.PrePrompt
-    };
-
-    foreach (var availableHook in availableHooks) {
-      var availableHookKey = availableHook.GetVariableKey();
-
-      if (!TryGetValue<HookStore>(availableHookKey, out var _)) {
-        AddOrUpdate(availableHookKey, HookStore.NewStore(availableHook));
-      }
-    }
-  }
 
   /// <summary>
   ///   Adds a key/value pair to the <see cref="StateManager" /> if the key does not already exist, or updates a key/value pair in the

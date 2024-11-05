@@ -36,10 +36,6 @@ public sealed class UnregisterHookCmdlet : PSCmdlet {
   public SwitchParameter PassThru { get; init; }
 
   /// <inheritdoc />
-  protected override void BeginProcessing()
-    => StateManager.InitialState();
-
-  /// <inheritdoc />
   protected override void ProcessRecord() {
     var hookTypeKey = Type.GetVariableKey();
 
