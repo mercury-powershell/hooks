@@ -12,16 +12,22 @@ namespace Mercury.PowerShell.Hooks;
 /// <summary>
 ///   The module assembly initializer.
 /// </summary>
-public sealed class ModuleAssemblyInitializer : IModuleAssemblyInitializer {
+public sealed class ModuleAssembly : IModuleAssemblyInitializer, IModuleAssemblyCleanup {
+  /// <inheritdoc />
+  public void OnRemove(PSModuleInfo psModuleInfo)
+    => SharedTimerManager.Cleanup();
+
   /// <inheritdoc />
   public void OnImport() {
     PreRegisterHookOptions();
     PreRegisterHookStores();
+    SharedTimerManager.Initialize();
   }
 
   private static void PreRegisterHookStores() {
     var availableHooks = new[] {
       HookType.ChangeWorkingDirectory,
+      HookType.Periodic,
       HookType.PrePrompt
     };
 
