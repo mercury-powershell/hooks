@@ -22,6 +22,7 @@ internal static class HookTypeExtensions {
   public static string GetVariableKey(this HookType hookType)
     => hookType switch {
       HookType.ChangeWorkingDirectory => $"{PREFIX}{nameof(HookType.ChangeWorkingDirectory)}",
+      HookType.Periodic => $"{PREFIX}{nameof(HookType.Periodic)}",
       HookType.PrePrompt => $"{PREFIX}{nameof(HookType.PrePrompt)}",
       var _ => throw new ArgumentOutOfRangeException(nameof(hookType), hookType, null)
     };
