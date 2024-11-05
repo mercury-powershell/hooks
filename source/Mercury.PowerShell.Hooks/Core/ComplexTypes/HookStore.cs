@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Management.Automation.Runspaces;
+using Mercury.PowerShell.Hooks.Core.ComplexTypes.Options;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Pwsh = System.Management.Automation.PowerShell;
 
@@ -81,9 +82,11 @@ public readonly struct HookStore : IEquatable<HookStore> {
   /// <param name="items">The hook store items.</param>
   /// <returns>A task representing the operation.</returns>
   public static Task InvokeAll(HashSet<HookStoreItem> items) => Task.Run(() => {
-    const int MAX_DEGREE_OF_PARALLELISM = 4;
+    if (!StateManager.TryGetValue<HookOptions>(HookOptions.KEY, out var options)) {
+      options = HookOptions.InitialValue;
+    }
 
-    using var runspacePool = RunspaceFactory.CreateRunspacePool(1, MAX_DEGREE_OF_PARALLELISM);
+    using var runspacePool = RunspaceFactory.CreateRunspacePool(1, options.MaxDegreeOfParallelism);
     runspacePool.ThreadOptions = PSThreadOptions.UseNewThread;
     runspacePool.ApartmentState = ApartmentState.MTA;
     runspacePool.Open();
