@@ -16,6 +16,7 @@
     "Get-Hook",
     "Register-Hook",
     "Unregister-Hook",
+    "Set-HookOption",
     "Out-Default",
     "Pop-Location",
     "Push-Location",
