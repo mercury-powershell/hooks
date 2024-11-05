@@ -3,6 +3,7 @@
 
 using Mercury.PowerShell.Hooks.Core;
 using Mercury.PowerShell.Hooks.Core.ComplexTypes;
+using Mercury.PowerShell.Hooks.Core.ComplexTypes.Options;
 using Mercury.PowerShell.Hooks.Core.Enums;
 using Mercury.PowerShell.Hooks.Core.Extensions;
 
@@ -13,8 +14,10 @@ namespace Mercury.PowerShell.Hooks;
 /// </summary>
 public sealed class ModuleAssemblyInitializer : IModuleAssemblyInitializer {
   /// <inheritdoc />
-  public void OnImport()
-    => PreRegisterHookStores();
+  public void OnImport() {
+    PreRegisterHookOptions();
+    PreRegisterHookStores();
+  }
 
   private static void PreRegisterHookStores() {
     var availableHooks = new[] {
@@ -28,6 +31,12 @@ public sealed class ModuleAssemblyInitializer : IModuleAssemblyInitializer {
       if (!StateManager.TryGetValue<HookStore>(availableHookKey, out var _)) {
         StateManager.AddOrUpdate(availableHookKey, HookStore.NewStore(availableHook));
       }
+    }
+  }
+
+  private static void PreRegisterHookOptions() {
+    if (!StateManager.TryGetValue<HookOptions>(HookOptions.KEY, out var _)) {
+      StateManager.AddOrUpdate(HookOptions.KEY, HookOptions.InitialValue);
     }
   }
 }
