@@ -2,7 +2,7 @@
 Module Name: Mercury.PowerShell.Hooks
 Module Guid: bec0b0f2-f120-42a1-91d1-10bc1aef6f58
 Download Help Link:
-Help Version: 0.1.0.0
+Help Version: 0.2.0.0
 Locale: en-US
 ---
 

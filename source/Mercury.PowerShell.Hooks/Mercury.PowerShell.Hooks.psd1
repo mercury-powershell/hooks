@@ -2,7 +2,7 @@
   GUID                 = "bec0b0f2-f120-42a1-91d1-10bc1aef6f58"
 
   RootModule           = "Mercury.PowerShell.Hooks.dll"
-  ModuleVersion        = "0.1.1.0"
+  ModuleVersion        = "0.2.0.0"
 
   Author               = "Bruno Sales"
   Description          = "Hooks functionality for PowerShell 7."
