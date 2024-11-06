@@ -10,6 +10,10 @@ using Mercury.PowerShell.Hooks.Exceptions;
 namespace Mercury.PowerShell.Hooks.Testing.Cmdlet;
 
 public sealed class GetHookCmdletTest {
+  [SetUp]
+  public void SetUp()
+    => new ModuleAssembly().OnImport();
+
   [Test]
   public void OutputType_When_IdentifierIsNotProvided_ShouldBe_HookStore() {
     // Arrange
