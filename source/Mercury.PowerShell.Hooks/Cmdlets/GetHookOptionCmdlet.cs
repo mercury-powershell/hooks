@@ -9,6 +9,7 @@ namespace Mercury.PowerShell.Hooks.Cmdlets;
 /// <summary>
 ///   Cmdlet to get the hook options.
 /// </summary>
+[OutputType(typeof(HookOptions))]
 [Cmdlet(VerbsCommon.Get, "HookOption")]
 public sealed class GetHookOptionCmdlet : PSCmdlet {
   /// <inheritdoc />
