@@ -18,6 +18,10 @@ Inspired by the [z-shell][1] hooks, trying to bring the same functionality to Po
 
 Gets a hook from the hook store or the entire hook store.
 
+### [Get-HookOption](Get-HookOption.md)
+
+Get the module current options.
+
 ### [Out-Default](Out-Default.md)
 
 Sends the output to the default formatter and to the default output cmdlet.
@@ -33,6 +37,10 @@ Adds the current location to the top of a location stack.
 ### [Register-Hook](Register-Hook.md)
 
 Registers a hook for a specific event.
+
+### [Set-HookOption](Set-HookOption.md)
+
+Set the module current options. The options are used to control the behavior of the module.
 
 ### [Set-Location](Set-Location.md)
 
