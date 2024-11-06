@@ -14,12 +14,15 @@ Currently, the module supports the following hooks:
   - This hook is executed when the working directory is changed. Made using a proxy cmdlet for `Set-Location`, `Push-Location`, and `Pop-Location`.
 - [ ] AddToHistory
   - Still not implemented. Looking for a way to hook into the history commands.
-- [ ] Periodic
-  - Still not implemented. Never used it in z-shell, so I am unsure about the behavior and timing.
+- [x] Periodic
+  - This hook is executed periodically. All instances of `PowerShell` that uses the module share the same timer and only one of them will trigger the hook.
+  - Predefined interval: `10s`.
 - [ ] ~~PreExecution~~
   - For now this one seems impossible to implement. Maybe if I implement a custom [PSHost][2], but there is no guarantee that it will work.
 
 **PS**: This module is still in development, so some features may not work as expected. If you find any issues, please report them.
+
+**PS²**: The `StateManager` is not shared between instances of `PowerShell`, so if a value is set in one instance, it will not be available in another instance. I'm planning to share a SQLite database between instances to store the state.
 
 ## Installation
 
