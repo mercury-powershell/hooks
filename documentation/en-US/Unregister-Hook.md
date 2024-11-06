@@ -74,23 +74,6 @@ Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
-### -Type
-
-The type of the hook to be unregistered.
-
-```yaml
-Type: HookType
-Parameter Sets: (All)
-Aliases:
-Accepted values: ChangeWorkingDirectory, PrePrompt
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByPropertyName, ByValue)
-Accept wildcard characters: False
-```
-
 ### -ProgressAction
 
 The preference for how to handle progress information.
@@ -104,6 +87,23 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Type
+
+The type of the hook to be unregistered.
+
+```yaml
+Type: HookType
+Parameter Sets: (All)
+Aliases:
+Accepted values: ChangeWorkingDirectory, Periodic, PrePrompt
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
