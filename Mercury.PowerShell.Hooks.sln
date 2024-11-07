@@ -19,6 +19,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.PowerShell.Hooks", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.PowerShell.Hooks.Testing", "testing\Mercury.PowerShell.Hooks.Testing\Mercury.PowerShell.Hooks.Testing.csproj", "{CFC97841-887C-4362-B60E-0BFEF102A664}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", "{01C11E95-6651-4955-9A3B-36969C18C800}"
+	ProjectSection(SolutionItems) = preProject
+		Mercury.PowerShell.Configuration.props = Mercury.PowerShell.Configuration.props
+		Mercury.PowerShell.Targets.props = Mercury.PowerShell.Targets.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mercury.Nuke.Build", "source\Mercury.Nuke.Build\Mercury.Nuke.Build.csproj", "{D19512F6-907C-4925-8997-69DBC899D4F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,8 +38,14 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9BDAD670-2353-4B3A-B85F-B37A8165C679} = {547D748F-0D21-442B-8B16-F80C8C1CB286}
 		{CFC97841-887C-4362-B60E-0BFEF102A664} = {71E6AD9D-7656-4739-AA93-E785D99AFCBD}
+		{01C11E95-6651-4955-9A3B-36969C18C800} = {242ECF1D-383E-4DE8-881A-51745EA0B36C}
+		{D19512F6-907C-4925-8997-69DBC899D4F3} = {547D748F-0D21-442B-8B16-F80C8C1CB286}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D19512F6-907C-4925-8997-69DBC899D4F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D19512F6-907C-4925-8997-69DBC899D4F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7D84AFC-0BE5-4FA1-BE40-246B46657D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7D84AFC-0BE5-4FA1-BE40-246B46657D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BDAD670-2353-4B3A-B85F-B37A8165C679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9BDAD670-2353-4B3A-B85F-B37A8165C679}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BDAD670-2353-4B3A-B85F-B37A8165C679}.Release|Any CPU.ActiveCfg = Release|Any CPU
