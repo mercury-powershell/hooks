@@ -1,11 +1,5 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="GetVersionFromGit" BeforeTargets="BeforeBuild">
-    <Exec Command="git describe --abbrev=60 --long --always"
-          WorkingDirectory="$(SolutionDir)"
-          StandardOutputImportance="High"
-          ConsoleToMsBuild="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="MercuryVersion"/>
-    </Exec>
     <Message Text="MercuryVersion: $(MercuryVersion)" Importance="High"/>
 
     <PropertyGroup Condition="'$(MercuryVersion)' != ''">
@@ -23,9 +17,5 @@
       <ProductVersion>$(FormattedVersion)</ProductVersion>
       <PackageVersion>$(BuildVersion)</PackageVersion>
     </PropertyGroup>
-  </Target>
-
-  <Target Name="GenerateDocumentationXml" AfterTargets="Build">
-    <Exec Command="pwsh -nop -nol -noni -c '$(SolutionDir)/documentation/New-XmlDocumentation.ps1 -Language en-US -OutputDirectory $(ProjectDir)$(OutputPath)'"/>
   </Target>
 </Project>

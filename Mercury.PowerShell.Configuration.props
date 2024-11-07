@@ -8,7 +8,7 @@
     <DebugType>none</DebugType>
     <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     <Optimize>true</Optimize>
-    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishReadyToRun>false</PublishReadyToRun>
     <PublishReadyToRunEmitSymbols>true</PublishReadyToRunEmitSymbols>
   </PropertyGroup>
 </Project>

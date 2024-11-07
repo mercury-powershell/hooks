@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="$(ProjectDir)Mercury.Targets.props"/>
-  <Import Project="$(ProjectDir)Mercury.Configuration.props"/>
+  <Import Project="../../Mercury.PowerShell.Targets.props"/>
+  <Import Project="../../Mercury.PowerShell.Configuration.props"/>
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
