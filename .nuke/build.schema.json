@@ -24,7 +24,9 @@
     "ExecutableTarget": {
       "type": "string",
       "enum": [
+        "CheckForUncommittedChanges",
         "Clean",
+        "CleanUp",
         "Default",
         "GenerateDocumentation",
         "GenerateNewRelease",
